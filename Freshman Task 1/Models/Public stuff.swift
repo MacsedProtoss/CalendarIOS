@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 //PublicData
 
@@ -19,6 +20,7 @@ var weekDays = ["Mon","Tues","Wed","Thur","Fri","Sat","Sun"]
 var firstWeekDayOfMonth: Int = 0
 var numOfDaysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
 var dateOfToday : Int = 0
+var currentDay : Int = 0
 
 struct thingsOfDay {
     var year : Int?
@@ -32,9 +34,52 @@ struct thingsOfDay {
 
 
 
-//PublicData End
+//PublicData End⬆️
+
+//DataSaveLocal
 
 
+func getUUID () -> String{
+    let userid = UserDefaults.standard.string(forKey: "Macsed")
+    if(userid != nil){
+        return userid!
+    }else{
+        let uuidRef = CFUUIDCreate(nil)
+        let uuidStringRef = CFUUIDCreateString(nil, uuidRef)
+        let uuid = uuidStringRef as! String
+        UserDefaults.standard.set(uuid, forKey: "Macsed")
+        return uuid
+    }
+}
+
+func saveThings (things : String , currentday : Int , index : Int) {
+    let userDefault = UserDefaults.standard
+    userDefault.set(things, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)-\(index)")
+    let numOfThings = userDefault.integer(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)")
+    userDefault.set(numOfThings+1, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)")
+}
+
+func getThings (currentday : Int , index : Int) -> String {
+    let userDefault = UserDefaults.standard
+    let things = userDefault.string(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)-\(index)")
+    return things!
+}
+
+func getNumOfThings () ->Int {
+    let userDefault = UserDefaults.standard
+    let numOfThings = userDefault.integer(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)")
+    return numOfThings
+}
+
+
+
+
+
+
+
+
+
+//DataSaveLocal End
 
 
 

@@ -8,7 +8,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,pushNav {
+    
+    func pushTargetTable(index: Int) {
+        let TableVC = ToDoListViewController()
+        self.navigationController?.pushViewController(TableVC, animated: true)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,7 +23,8 @@ class ViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent=false
         self.view.backgroundColor=UIColor.darkGray
         setupViews()
-        
+        getUUID()
+        //self.navigationController?.pushViewController(ToDoListViewController(), animated: true)
     }
     
     let monthview : MonthView = {
@@ -64,7 +71,7 @@ class ViewController: UIViewController {
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         collectionView.topAnchor.constraint(equalTo: weekdayview.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
+        collectionView.calendarViewDelegate = self
     }
 
 }

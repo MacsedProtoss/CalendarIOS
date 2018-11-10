@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol pushNav : class {
+    func pushTargetTable (index : Int)
+}
+
 class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource,MonthViewDelegate {
     
+    var calendarViewDelegate : pushNav?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,6 +72,8 @@ class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UIColle
                 cell.isUserInteractionEnabled = true
                 cell.label.textColor = UIColor.white
             }
+            
+            
         }
         
         cell.setupLayout()
@@ -78,6 +85,8 @@ class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UIColle
         cell?.backgroundColor = UIColor.red
         let label = cell?.subviews[1] as! UILabel
         label.textColor=UIColor.white
+        currentDay = indexPath.row + 1
+        self.calendarViewDelegate?.pushTargetTable(index: indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -85,6 +94,7 @@ class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UIColle
         cell?.backgroundColor=UIColor.clear
         let label = cell?.subviews[1] as! UILabel
         label.textColor = UIColor.white
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
