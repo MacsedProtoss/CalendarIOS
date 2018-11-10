@@ -9,7 +9,7 @@
 import UIKit
 class CalendarCustomCell : UICollectionViewCell{
     
-    var requireNotificate : Bool?
+    
     
     
     override init(frame: CGRect) {
@@ -50,12 +50,7 @@ class CalendarCustomCell : UICollectionViewCell{
         notificateImage.widthAnchor.constraint(equalTo: notificateImage.heightAnchor).isActive = true
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if let noti = requireNotificate {
-            notificateImage.image=UIImage.init(imageLiteralResourceName: "dot")
-        }
-    }
+   
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

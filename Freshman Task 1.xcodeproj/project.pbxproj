@@ -153,7 +153,6 @@
 				4BE50BA621907426008C7784 /* CalendarCustomCell.swift */,
 				4BE50BA82190757A008C7784 /* CalendarCollectionView.swift */,
 				4BDAE55821930969000ACDD4 /* ToDoListCustomCell.swift */,
-				4BDAE55A219309A0000ACDD4 /* ToDoListViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -173,6 +172,7 @@
 		4BDAE5552192DFD4000ACDD4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4BDAE55A219309A0000ACDD4 /* ToDoListViewController.swift */,
 				4B7CA6AD218EF6E40016CA7C /* ViewController.swift */,
 			);
 			path = Controllers;

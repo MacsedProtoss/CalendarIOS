@@ -22,12 +22,7 @@ var numOfDaysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
 var dateOfToday : Int = 0
 var currentDay : Int = 0
 
-struct thingsOfDay {
-    var year : Int?
-    var month : Int?
-    var day : Int?
-    var doHaveThing : Bool?
-}
+
 
 
 
@@ -55,6 +50,7 @@ func getUUID () -> String{
 func saveThings (things : String , currentday : Int , index : Int) {
     let userDefault = UserDefaults.standard
     userDefault.set(things, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)-\(index)")
+    userDefault.set("DOING", forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)-\(index)-state")
     let numOfThings = userDefault.integer(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)")
     userDefault.set(numOfThings+1, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)")
 }
@@ -65,18 +61,66 @@ func getThings (currentday : Int , index : Int) -> String {
     return things!
 }
 
+func getState (index : Int)-> String {
+    let userDefault = UserDefaults.standard
+    let state = userDefault.string(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)-state")
+    return state!
+}
+
 func getNumOfThings () ->Int {
     let userDefault = UserDefaults.standard
     let numOfThings = userDefault.integer(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)")
     return numOfThings
 }
 
+func deleteThing (index : Int) {
+    let userDefault = UserDefaults.standard
+    let maxNum = getNumOfThings()
+    
+    if index==maxNum {
+        userDefault.removeObject(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)")
+    }else{
+        for i in index...maxNum-1{
+            userDefault.set(userDefault.string(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(i+1)"), forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)")
+            userDefault.set(userDefault.string(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(i+1)-state"), forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)-state")
+        }
+        userDefault.removeObject(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(maxNum)")
+        userDefault.removeObject(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(maxNum)-state")
+    }
+    
+    let numOfThings = userDefault.integer(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)")
+    userDefault.set(numOfThings-1, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)")
+}
+
+func changeState (index : Int) {
+    let userDefault = UserDefaults.standard
+    var state = userDefault.string(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)-state")
+    state =  (state == "DOING") ? "DONE":"DOING"
+    userDefault.set(state, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)-state")
+}
 
 
-
-
-
-
+func isALlDone () -> Bool {
+    let num = getNumOfThings()
+    var temp = 0
+    if num > 0 {
+        for i in 1...num {
+            let state = getState(index: i)
+            if (state == "DONE"){
+                temp += 1
+            }
+        }
+        if temp == num {
+            return true
+        }else{
+            return false
+        }
+    }else{
+        return true 
+    }
+    
+    
+}
 
 
 //DataSaveLocal End

@@ -27,6 +27,13 @@ class ViewController: UIViewController,pushNav {
         //self.navigationController?.pushViewController(ToDoListViewController(), animated: true)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        currentDay = 0
+        collectionView.layoutCollectionView.reloadData()
+    }
+    
+    
+    
     let monthview : MonthView = {
         let temp = MonthView()
         temp.translatesAutoresizingMaskIntoConstraints = false
@@ -74,5 +81,7 @@ class ViewController: UIViewController,pushNav {
         collectionView.calendarViewDelegate = self
     }
 
+    
+    
 }
 

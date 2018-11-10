@@ -23,20 +23,16 @@ class TaskCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    let checkBox :UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.clear
-        //button.setImage(UIImage.init(imageLiteralResourceName: "check"), for: .normal)
-        //button.setImage(UIImage.init(imageLiteralResourceName: "round_check"), for: .highlighted)
-        button.setTitle("DONE", for: .normal)
-        button.setTitleColor(UIColor.blue, for: .normal)
-        button.setTitleColor(UIColor.white, for: .highlighted)
-        button.isEnabled = true
-        return button
+    let stateLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textAlignment = .center
+        label.backgroundColor = UIColor.clear
+        label.text = "DOING"
+        label.textColor = UIColor.red
+        return label
     }()
-    
     
     let thingLabel : UILabel = {
         let label = UILabel()
@@ -50,16 +46,20 @@ class TaskCell: UITableViewCell {
     }()
     
     func setupSubViews(){
-        addSubview(checkBox)
-        checkBox.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        checkBox.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        checkBox.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        checkBox.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        addSubview(stateLabel)
+        stateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        stateLabel.widthAnchor.constraint(equalToConstant: 65).isActive = true
+        stateLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        stateLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
         addSubview(thingLabel)
-        thingLabel.leadingAnchor.constraint(equalTo: checkBox.trailingAnchor, constant: 10).isActive = true
+        thingLabel.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 10).isActive = true
         thingLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         thingLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
         thingLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
+    
+    
+    
+    
     
 }

@@ -75,7 +75,15 @@ class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UIColle
             
             
         }
+        currentDay = indexPath.row+1
         
+        let isallDone = isALlDone()
+        
+        if isallDone {
+           cell.notificateImage.image = nil
+        }else{
+            cell.notificateImage.image = UIImage.init(imageLiteralResourceName: "dot")
+        }
         cell.setupLayout()
         return cell
     }
