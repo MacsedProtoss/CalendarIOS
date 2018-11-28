@@ -6,6 +6,12 @@
 //  Copyright © 2018 MacsedProtoss. All rights reserved.
 //
 
+
+
+
+
+
+
 import UIKit
 
 protocol pushNav : class {
@@ -15,7 +21,8 @@ protocol pushNav : class {
 class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource,MonthViewDelegate {
     
     var calendarViewDelegate : pushNav?
-
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
@@ -90,11 +97,23 @@ class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UIColle
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell=collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = UIColor.red
+        cell?.backgroundColor = UIColor.white
         let label = cell?.subviews[1] as! UILabel
-        label.textColor=UIColor.white
+        label.textColor=UIColor.darkGray
         currentDay = indexPath.row + 1
-        self.calendarViewDelegate?.pushTargetTable(index: indexPath.row)
+        startPoint = cell?.center ?? CGPoint.zero
+        startPoint = CGPoint(x: startPoint.x-15, y: startPoint.y+190)
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            cell?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        }, completion: nil)
+        
+        let time: TimeInterval = 0.15
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
+            self.calendarViewDelegate?.pushTargetTable(index: indexPath.row)
+            //print("0.2 秒后输出")
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -124,6 +143,14 @@ class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UIColle
         firstWeekDayOfMonth = getFirstWeekDayOfMonth()
         layoutCollectionView.reloadData()
     }
+    
+    /*@objc override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let press = (touches as NSSet).allObjects[0] as! UITouch
+        startPoint = press.location(in: <#T##UIView?#>)
+    }
+    */
+    
+    
     
     
 }

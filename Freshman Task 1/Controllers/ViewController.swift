@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController,pushNav {
+class ViewController: UIViewController,pushNav,UINavigationControllerDelegate {
+    
     
     func pushTargetTable(index: Int) {
         let TableVC = ToDoListViewController()
@@ -24,6 +25,10 @@ class ViewController: UIViewController,pushNav {
         self.view.backgroundColor=UIColor.darkGray
         setupViews()
         getUUID()
+        navigationController?.delegate = self
+        
+        //secondVC.modalPresentationStyle = .custom
+        
         //self.navigationController?.pushViewController(ToDoListViewController(), animated: true)
     }
     
@@ -81,6 +86,42 @@ class ViewController: UIViewController,pushNav {
         collectionView.calendarViewDelegate = self
     }
 
+    
+    
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        transition.transitionMode = .present
+//        transition.rectangleColor = UIColor.lightGray
+//        transition.startingPoint = startPoint
+//        return transition
+//    }
+//
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        transition.transitionMode = .dismiss
+//        transition.rectangleColor = UIColor.lightGray
+//        transition.startingPoint = startPoint
+//        return transition
+//    }
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        print("\(navigationController) \(operation.rawValue)")
+        let transition = AnimationTransition()
+        if operation == .push {
+            transition.mode = .present
+            //transition.rectangleColor = UIColor.lightGray
+            transition.startingPoint = startPoint
+            print("\(transition.mode)")
+            return transition
+        }else if operation == .pop {
+            transition.mode = .pop
+            //transition.rectangleColor = UIColor.lightGray
+            transition.startingPoint = startPoint
+            print("\(transition.mode)")
+            return transition
+        }
+        return nil
+    }
+ 
     
     
 }

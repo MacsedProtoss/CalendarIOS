@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class ToDoListViewController: UITableViewController {
+class ToDoListViewController: UITableViewController,UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         self.view.backgroundColor = UIColor.darkGray
@@ -20,7 +20,7 @@ class ToDoListViewController: UITableViewController {
         self.tableView.rowHeight = 50
         let addBtn = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addBtnAction))
         self.navigationItem.rightBarButtonItem = addBtn
-        addLongPressFunc()
+       // addLongPressFunc()
     }
     
     let addButton : UIButton = {
@@ -41,7 +41,8 @@ class ToDoListViewController: UITableViewController {
         let okAction = UIAlertAction(title: "OK", style: .default, handler: {ACTION in
             let thing = alertController.textFields!.first!
             saveThings(things: "\(thing.text ?? "")", currentday: currentDay, index: getNumOfThings()+1)
-            self.tableView.reloadData()
+            
+            self.animateTable(state: "add")
             })
         alertController.addAction(cancelAction)
         alertController.addAction(okAction)
@@ -49,12 +50,13 @@ class ToDoListViewController: UITableViewController {
         
     }
     
-    func addLongPressFunc (){
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longpressed(sender:)))
-        self.tableView.addGestureRecognizer(longPress)
-    }
     
-    
+    //func addLongPressFunc (){
+    //    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longpressed(sender:)))
+    //    self.tableView.addGestureRecognizer(longPress)
+    //}
+ 
+    /*
     @objc func longpressed (sender : UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizer.State.began {
             let pressPoint = sender.location(in: self.tableView)
@@ -87,6 +89,7 @@ class ToDoListViewController: UITableViewController {
             }
         }
     }
+    */
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -100,7 +103,7 @@ class ToDoListViewController: UITableViewController {
             cell.stateLabel.text = "DONE"
             cell.stateLabel.textColor = UIColor.blue
         }else{
-            cell.stateLabel.text = "DOING"
+            cell.stateLabel.text = "UNDO"
             cell.stateLabel.textColor = UIColor.red
         }
         cell.backgroundColor = UIColor.lightGray
@@ -112,10 +115,126 @@ class ToDoListViewController: UITableViewController {
         return num
     }
     
+    /*
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction:UITableViewRowAction = UITableViewRowAction(style: .destructive, title: "DELETE", handler: {(action, indexPath) in
+            deleteThing(index : indexPath.row + 1)
+            self.tableView.reloadData()})
+        let undoAction:UITableViewRowAction = UITableViewRowAction(style: .normal, title: "UNDO", handler: {(action, indexPath) in
+            changeState(index: indexPath.row + 1)
+            self.tableView.reloadData()})
+        let doneAction:UITableViewRowAction = UITableViewRowAction(style: .normal, title: "DONE", handler: {(action, indexPath) in
+            changeState(index : indexPath.row + 1)
+            self.tableView.reloadData()})
+        
+        let currentState = getState(index: indexPath.row+1)
+        if currentState == "DONE" {
+            return [undoAction,deleteAction]
+        }else{
+            return [doneAction,deleteAction]
+        }
+        
+    }
+   */
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?{
+        let deleteAction:UIContextualAction = UIContextualAction(style: .destructive, title: "DELETE") { (action, sourceView, completionHandler) in
+            deleteThing(index : indexPath.row + 1)
+            self.tableView.reloadData()
+            completionHandler(true)
+        }
+        let doAction:UIContextualAction = UIContextualAction(style: .normal, title: "DONE") { (action, sourceView, completionHandler) in
+            changeState(index: indexPath.row + 1)
+            self.tableView.reloadData()
+        }
+        doAction.backgroundColor = UIColor.blue
+        //let cancelAction:UIContextualAction = UIContextualAction(style: .normal, title: "CANCEL") { (action, sourceView, /completionHandler) in
+        //}
+        
+        let currentState = getState(index: indexPath.row+1)
+        if currentState == "DONE" {
+            doAction.title = "UNDO"
+        }else{
+            doAction.title = "DONE"
+        }
+        
+        let actions : [UIContextualAction] = [deleteAction,doAction]
+        let action:UISwipeActionsConfiguration = UISwipeActionsConfiguration(actions: actions)
+        action.performsFirstActionWithFullSwipe = true
+        return action
+        
+    }
     
     
+//    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//
+////        let transition = Rectangle()
+////
+////        transition.transitionMode = .dismiss
+////        transition.rectangleColor = UIColor.lightGray
+////        transition.startingPoint = startPoint
+////
+////        return transition
+//
+//        print("\(navigationController) \(operation.rawValue)")
+//        let transition = CircularTransition()
+//        if operation == .push {
+//            transition.transitionMode = .present
+//            transition.circleColor = UIColor.lightGray
+//            transition.startingPoint = startPoint
+//            print("\(transition.transitionMode)")
+//            return transition
+//        }else if operation == .pop {
+//            let transition = CircularTransition()
+//            transition.transitionMode = .dismiss
+//            transition.circleColor = UIColor.lightGray
+//            transition.startingPoint = startPoint
+//            print("\(transition.transitionMode)")
+//            return transition
+//        }
+//        return nil
+//    }
+//
     
+    func animateTable(state:String) {
+        if state == "normal"{
+            self.tableView.reloadData()
+            let cells = self.tableView.visibleCells
+            let tableHeight: CGFloat = self.tableView.bounds.size.height
+            for (index, cell) in cells.enumerated() {
+                cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+                
+                UIView.animate(withDuration: 1.0, delay: 0.1 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+                    cell.transform = CGAffineTransform(translationX: 0, y: 0);}, completion: nil)
+                
+            }
+        }else if state == "add" {
+            
+            self.tableView.reloadData()
+            let cells = self.tableView.visibleCells
+            let tableHeight: CGFloat = self.tableView.bounds.size.height
+            
+            var count = 0
+            for (_, _) in cells.enumerated() {
+                count += 1
+            }
+            
+            for (index, cell) in cells.enumerated() {
+                if index == count-1 {
+                    cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+                
+                    UIView.animate(withDuration: 1.0, delay: 0.0 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+                    cell.transform = CGAffineTransform(translationX: 0, y: 0);}, completion: nil)
+                
+                }
+            }
+            
+        }
     
+    }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.animateTable(state: "normal")
+    }
     
 }

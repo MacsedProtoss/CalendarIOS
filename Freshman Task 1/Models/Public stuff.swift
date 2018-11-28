@@ -21,7 +21,7 @@ var firstWeekDayOfMonth: Int = 0
 var numOfDaysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
 var dateOfToday : Int = 0
 var currentDay : Int = 0
-
+var startPoint = CGPoint.zero
 
 
 
@@ -50,7 +50,7 @@ func getUUID () -> String{
 func saveThings (things : String , currentday : Int , index : Int) {
     let userDefault = UserDefaults.standard
     userDefault.set(things, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)-\(index)")
-    userDefault.set("DOING", forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)-\(index)-state")
+    userDefault.set("UNDO", forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)-\(index)-state")
     let numOfThings = userDefault.integer(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)")
     userDefault.set(numOfThings+1, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentday)")
 }
@@ -95,7 +95,7 @@ func deleteThing (index : Int) {
 func changeState (index : Int) {
     let userDefault = UserDefaults.standard
     var state = userDefault.string(forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)-state")
-    state =  (state == "DOING") ? "DONE":"DOING"
+    state =  (state == "UNDO") ? "DONE":"UNDO"
     userDefault.set(state, forKey: "\(currentYear)-\(currentMonthIndex)-\(currentDay)-\(index)-state")
 }
 
@@ -137,7 +137,6 @@ func InitTime (){
     currentMonthIndex=presentMonthIndex
     dateOfToday = Calendar.current.component(.day, from: Date())
     firstWeekDayOfMonth = getFirstWeekDayOfMonth()
-    
 }
 
 

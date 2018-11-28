@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B52935F219D8BEF006B29B6 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B52935E219D8BEF006B29B6 /* Animations.swift */; };
 		4B7CA6AC218EF6E40016CA7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7CA6AB218EF6E40016CA7C /* AppDelegate.swift */; };
 		4B7CA6AE218EF6E40016CA7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7CA6AD218EF6E40016CA7C /* ViewController.swift */; };
 		4B7CA6B1218EF6E40016CA7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B7CA6AF218EF6E40016CA7C /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B52935E219D8BEF006B29B6 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		4B7CA6A8218EF6E40016CA7C /* Freshman Task 1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Freshman Task 1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B7CA6AB218EF6E40016CA7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B7CA6AD218EF6E40016CA7C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				4BDAE54D2192DBA1000ACDD4 /* Public stuff.swift */,
+				4B52935E219D8BEF006B29B6 /* Animations.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				4BE50BA5219071CF008C7784 /* WeekView.swift in Sources */,
 				4BDAE54E2192DBA1000ACDD4 /* Public stuff.swift in Sources */,
 				4B7CA6AE218EF6E40016CA7C /* ViewController.swift in Sources */,
+				4B52935F219D8BEF006B29B6 /* Animations.swift in Sources */,
 				4BE50BA721907426008C7784 /* CalendarCustomCell.swift in Sources */,
 				4BE50BA32190712F008C7784 /* MonthView.swift in Sources */,
 				4BDAE55B219309A0000ACDD4 /* ToDoListViewController.swift in Sources */,
