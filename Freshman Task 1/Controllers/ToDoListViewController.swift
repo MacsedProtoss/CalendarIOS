@@ -20,6 +20,14 @@ class ToDoListViewController: UITableViewController,UINavigationControllerDelega
         self.tableView.rowHeight = 50
         let addBtn = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addBtnAction))
         self.navigationItem.rightBarButtonItem = addBtn
+        
+        let downGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        
+        downGesture.direction = .down
+        view.addGestureRecognizer(downGesture)
+        
+        
+        
        // addLongPressFunc()
     }
     
@@ -114,6 +122,14 @@ class ToDoListViewController: UITableViewController,UINavigationControllerDelega
         let num = getNumOfThings()
         return num
     }
+    
+    
+    
+    
+    
+    
+    
+    
     
     /*
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -236,5 +252,15 @@ class ToDoListViewController: UITableViewController,UINavigationControllerDelega
         super.viewDidAppear(animated)
         self.animateTable(state: "normal")
     }
+    
+    
+    @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
+        
+        if (sender.direction == .down) {
+            //monthview.buttonTouchRespond(sender: monthview.NextMonthButton)
+            addBtnAction()
+        }
+    }
+    
     
 }

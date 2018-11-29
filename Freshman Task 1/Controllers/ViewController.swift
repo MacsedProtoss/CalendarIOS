@@ -27,6 +27,16 @@ class ViewController: UIViewController,pushNav,UINavigationControllerDelegate {
         getUUID()
         navigationController?.delegate = self
         
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        
+        leftSwipe.direction = .left
+        rightSwipe.direction = .right
+        
+        view.addGestureRecognizer(leftSwipe)
+        view.addGestureRecognizer(rightSwipe)
+        
+        
         //secondVC.modalPresentationStyle = .custom
         
         //self.navigationController?.pushViewController(ToDoListViewController(), animated: true)
@@ -120,6 +130,21 @@ class ViewController: UIViewController,pushNav,UINavigationControllerDelegate {
             return transition
         }
         return nil
+    }
+    
+    
+    
+    @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
+        
+        if (sender.direction == .right) {
+            if (monthview.PrevMonthButton.isEnabled == true) {
+                monthview.buttonTouchRespond(sender: monthview.PrevMonthButton)
+            }
+        }
+        
+        if (sender.direction == .left) {
+            monthview.buttonTouchRespond(sender: monthview.NextMonthButton)
+        }
     }
  
     
