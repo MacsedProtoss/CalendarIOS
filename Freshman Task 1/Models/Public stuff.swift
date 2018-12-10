@@ -22,7 +22,7 @@ var numOfDaysInEachMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
 var dateOfToday : Int = 0
 var currentDay : Int = 0
 var startPoint = CGPoint.zero
-
+let lightBlueColor : UIColor = UIColor.init(displayP3Red: 0/255, green: 107/255, blue: 210/255, alpha: 1)
 
 
 

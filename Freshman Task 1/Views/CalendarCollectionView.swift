@@ -75,9 +75,11 @@ class CalendarCollectionView : UIView,UICollectionViewDelegateFlowLayout,UIColle
             if cellDate < dateOfToday && currentMonthIndex == presentMonthIndex && currentYear == presentYear {
                 cell.isUserInteractionEnabled = false
                 cell.label.textColor = UIColor.lightGray
+                
             }else{
                 cell.isUserInteractionEnabled = true
                 cell.label.textColor = UIColor.white
+                
             }
             
             

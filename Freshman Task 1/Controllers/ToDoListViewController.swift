@@ -21,15 +21,51 @@ class ToDoListViewController: UITableViewController,UINavigationControllerDelega
         let addBtn = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addBtnAction))
         self.navigationItem.rightBarButtonItem = addBtn
         
-        let downGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        let leftGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        refreshController.addTarget(self, action: #selector(addNew), for: UIControl.Event.valueChanged)
         
-        downGesture.direction = .down
-        view.addGestureRecognizer(downGesture)
+        let customView : UIView = {
+            let view = UIView()
+            view.frame = CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: 50)
+            view.backgroundColor = UIColor.darkGray
+            return view
+        }()
+        
+        customView.addSubview(customLabel)
+        customLabel.leadingAnchor.constraint(equalTo: customView.leadingAnchor).isActive = true
+        customLabel.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
+        customLabel.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
+        customLabel.heightAnchor.constraint(equalTo: customView.heightAnchor).isActive = true
+        
+        //refreshController.addSubview(customView)
+        self.tableView.addSubview(refreshController)
+        
+        
+        leftGesture.direction = .left
+        view.addGestureRecognizer(leftGesture)
         
         
         
        // addLongPressFunc()
     }
+    
+    
+    let refreshController = UIRefreshControl()
+    
+    
+    let customLabel : UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 30)
+        label.text = "Add New"
+        label.textAlignment = .center
+        label.textColor = UIColor.white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    
+    
+    
     
     let addButton : UIButton = {
         let button = UIButton()
@@ -109,7 +145,7 @@ class ToDoListViewController: UITableViewController,UINavigationControllerDelega
         let state = getState(index: indexPath.row+1)
         if state == "DONE" {
             cell.stateLabel.text = "DONE"
-            cell.stateLabel.textColor = UIColor.blue
+            cell.stateLabel.textColor = lightBlueColor
         }else{
             cell.stateLabel.text = "UNDO"
             cell.stateLabel.textColor = UIColor.red
@@ -256,10 +292,18 @@ class ToDoListViewController: UITableViewController,UINavigationControllerDelega
     
     @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
         
-        if (sender.direction == .down) {
+        if (sender.direction == .left) {
             //monthview.buttonTouchRespond(sender: monthview.NextMonthButton)
-            addBtnAction()
+            self.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    
+    
+    @objc func addNew (){
+        addBtnAction()
+        self.refreshController.endRefreshing()
+        self.tableView.reloadData()
     }
     
     
